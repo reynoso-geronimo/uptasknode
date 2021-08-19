@@ -2,7 +2,8 @@ const express =require('express');
 const routes= require('./routes');
 const path=require('path')
 const flash=  require ('connect-flash');
-
+const session = require('express-session')
+const cookieParser = require('cookie-parser')
 //helpers con algunas funciones
 
 const helpers =  require('./helpers');
@@ -38,13 +39,22 @@ app.set('view engine', 'pug')
 //carpeta de las vistas
 app.set('views',path.join(__dirname, './views'));
 
+app.use(cookieParser())
 
 //agregar flash messages
 app.use(flash());
 
+
+//sesiones nos permiten navegar entre distintas paginas sin volvernos a autenticar
+app.use(session({
+    secret:'supersecreto',
+    resave:false,
+    saveUninitialized:false
+}))
 //pasar vardump a la aplicacion
 app.use((req,res, next)=>{
     res.locals.vardump = helpers.vardump;
+    res.locals.mensajes = req.flash();
     next();
 })
 
