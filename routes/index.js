@@ -54,5 +54,8 @@ module.exports = function () {
   router.post('/crear-cuenta', usuariosController.CrearCuenta)
   router.get('/iniciar-sesion', usuariosController.formIniciarSesion)
   router.post('/iniciar-sesion', authController.autenticarUsuario)
+
+  router.get('/cerrar-sesion',authController.cerrarSesion)
+
   return router;
 };
