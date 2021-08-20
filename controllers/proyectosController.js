@@ -3,22 +3,26 @@ const Tareas= require('../models/Tareas')
 
 
 exports.proyectosHome=async (req, res) => {
-  console.log(res.locals.usuario)
-  const proyectos = await Proyectos.findAll();  
+  //console.log(res.locals.usuario)
+
+  const usuarioId = res.locals.usuario.id
+  const proyectos = await Proyectos.findAll({where:{usuarioId}});  
   res.render('index',{
       nombrePagina : 'Proyectos',
       proyectos
     });
   }
 exports.formularioProyecto = async (req,res)=>{
-  const proyectos = await Proyectos.findAll();
+  const usuarioId = res.locals.usuario.id
+  const proyectos = await Proyectos.findAll({where:{usuarioId}});
   res.render('nuevoProyecto',{
     nombrePagina : 'Nuevo Proyecto',
     proyectos
   });
 }
 exports.nuevoProyecto = async (req,res)=>{
-  const proyectos = await Proyectos.findAll(); 
+  const usuarioId = res.locals.usuario.id
+  const proyectos = await Proyectos.findAll({where:{usuarioId}}); 
   //enviar a la cosnola lo que el usuario escriva
   //console.log(req.body)
   //validar que tengamos algo en el input
@@ -47,11 +51,16 @@ exports.nuevoProyecto = async (req,res)=>{
 }
 
 exports.proyectoPorUrl = async (req,res,next)=>{
-  const proyectosPromise =  Proyectos.findAll(); 
+  
+  const usuarioId = res.locals.usuario.id
+  const proyectosPromise =  Proyectos.findAll({where:{usuarioId}});
+  
+  
   
   const proyectoPromise= Proyectos.findOne({
     where:{
-      url:req.params.url
+      url:req.params.url,
+      usuarioId
     }
   })
   const [proyectos, proyecto] = await Promise.all([proyectosPromise,proyectoPromise]
@@ -67,11 +76,16 @@ exports.proyectoPorUrl = async (req,res,next)=>{
   )
 }
 exports.formularioEditar = async (req, res)=>{
-  const proyectosPromise =  Proyectos.findAll(); 
+  
+
+  const usuarioId = res.locals.usuario.id
+  const proyectosPromise =  Proyectos.findAll({where:{usuarioId}});
+  
 
   const proyectoPromise= Proyectos.findOne({
     where:{
-      id:req.params.id
+      id:req.params.id,
+      usuarioId
     }
   })
   const [proyectos, proyecto] = await Promise.all([proyectosPromise,proyectoPromise])
@@ -85,7 +99,8 @@ exports.formularioEditar = async (req, res)=>{
 }
 
 exports.actualizarProyecto = async (req,res)=>{
-  const proyectos = await Proyectos.findAll(); 
+  const usuarioId = res.locals.usuario.id
+  const proyectos = await Proyectos.findAll({where:{usuarioId}});
   //enviar a la cosnola lo que el usuario escriva
   //console.log(req.body)
   //validar que tengamos algo en el input
