@@ -38,8 +38,8 @@ exports.nuevoProyecto = async (req,res)=>{
     })
   }else{
     //insertar en la bd
-    
-    await Proyectos.create({nombre});
+    const usuarioId = res.locals.usuario.id
+    await Proyectos.create({nombre, usuarioId});
     res.redirect('/');
     
       
