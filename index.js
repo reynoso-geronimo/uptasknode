@@ -4,6 +4,7 @@ const path=require('path')
 const flash=  require ('connect-flash');
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
+const passport = require ('./config/passport')
 //helpers con algunas funciones
 
 const helpers =  require('./helpers');
@@ -51,6 +52,8 @@ app.use(session({
     resave:false,
     saveUninitialized:false
 }))
+app.use(passport.initialize());
+app.use(passport.session());
 //pasar vardump a la aplicacion
 app.use((req,res, next)=>{
     res.locals.vardump = helpers.vardump;

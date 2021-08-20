@@ -25,3 +25,11 @@ exports.CrearCuenta = async (req, res) => {
     });
   }
 };
+
+exports.formIniciarSesion = (req, res) => {
+  const {error}=  res.locals.mensajes;
+  res.render("iniciarSesion", {
+    nombrePagina: "Inicia Sesion",
+    error
+  });
+};
