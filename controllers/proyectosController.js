@@ -3,6 +3,7 @@ const Tareas= require('../models/Tareas')
 
 
 exports.proyectosHome=async (req, res) => {
+  console.log(res.locals.usuario)
   const proyectos = await Proyectos.findAll();  
   res.render('index',{
       nombrePagina : 'Proyectos',
