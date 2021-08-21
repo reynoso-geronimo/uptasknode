@@ -1,4 +1,5 @@
 const passport = require('passport')
+const Usuarios= require('../models/Usuarios')
 
 
 exports.autenticarUsuario = passport.authenticate('local', {
@@ -27,4 +28,16 @@ exports.cerrarSesion=(req,res)=>{
     req.session.destroy(()=>{
         res.redirect('/iniciar-sesion');
     })
+}
+
+exports.enviarToken= async (req,res)=>{
+    req.flash('error', "No existe esa cuenta")
+        const usuario= await Usuarios.findOne({
+            where:{email:req.body.email}
+             });
+  if(!usuario){res.render('reestablecer', res.render('reestablecer',{
+    nombrePagina: 'Reestablecer password',
+    mensajes:req.flash()
+    
+  }))}
 }
