@@ -1,6 +1,7 @@
 const passport = require('passport')
 const Usuarios= require('../models/Usuarios')
 const crypto= require('crypto')
+const { Op } = require("sequelize");
 
 exports.autenticarUsuario = passport.authenticate('local', {
     successRedirect:'/',
@@ -52,6 +53,33 @@ exports.enviarToken= async (req,res)=>{
     const reseturl= `http://${req.headers.host}/reestablecer/${usuario.token}`
     console.log(reseturl)
 }
-exports.resetPassword=async (req,res)=>{
-    res.json(req.params.token)
+exports.validarToken=async (req,res)=>{
+    const usuario = await Usuarios.findOne({
+        where:{
+          token: req.params.token
+    }});
+    console.log(usuario)
+    // si no encuentro al usuario
+    if(!usuario){
+        req.flash('error', 'No Valido');
+        res.redirect('/reestablecer')
+    }
+    //formulario para resetear el password
+    res.render('resetPassword',{
+        nombrePagina: 'Reestablecer Contraseña'
+
+    })
+}
+// cambia el passowrd pornuno nuevo
+exports.actualizarPassword= async (req,res)=>{
+    const usuario= await Usuarios.findOne({where:{
+        token:req.params.token,
+        expiracion:{
+            [Op.gt]: Date.now()
+
+        }
+        //veriificar si el usuario existe
+       
+    }})
+    console.log(usuario)
 }
