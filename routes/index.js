@@ -51,7 +51,9 @@ module.exports = function () {
   //crear nueva cuenta
 
   router.get('/crear-cuenta', usuariosController.formCrearCuenta)
-  router.post('/crear-cuenta', usuariosController.CrearCuenta)
+  router.post('/crear-cuenta', usuariosController.crearCuenta)
+  router.get('/confirmar/:email', usuariosController.confirmarCuenta)
+
   router.get('/iniciar-sesion', usuariosController.formIniciarSesion)
   router.post('/iniciar-sesion', authController.autenticarUsuario)
 
@@ -65,4 +67,6 @@ module.exports = function () {
   router.get('/reestablecer/:token', authController.validarToken)
   router.post('/reestablecer/:token', authController.actualizarPassword)
   return router;
+  
+
 };

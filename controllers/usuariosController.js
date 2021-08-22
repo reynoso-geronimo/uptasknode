@@ -6,7 +6,7 @@ exports.formCrearCuenta = (req, res) => {
     nombrePagina: "Crear Cuenta en uptask",
   });
 };
-exports.CrearCuenta = async (req, res) => {
+exports.crearCuenta = async (req, res) => {
   //leer los datos
 
   const { email, password } = req.body;
@@ -58,4 +58,16 @@ exports.formReestablecerPassword =(req,res)=>{
     nombrePagina: 'Reestablecer password'
     
   })
+}
+//cambia el estado de una cuenta
+exports.confirmarCuenta= async (req, res)=>{
+  const usuario= await Usuarios.findOne({where:{email:req.params.email}})
+  if(!usuario){
+    req.flash('error', 'No valido');
+    res.redirect('/Crear-Cuenta')
+  }
+  usuario.activo=1
+  await usuario.save();
+    req.flash('correcto', 'Cuenta activada')
+    res.redirect('/iniciar-sesion')
 }
