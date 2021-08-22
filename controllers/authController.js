@@ -57,6 +57,8 @@ exports.enviarToken = async (req, res) => {
     reseturl,
     archivo: 'reestablecer-password'
   })
+  req.flash('correcto', 'Se envio un mensaje a tu correo')
+  res.redirect('/iniciar-Sesion')
 };
 exports.validarToken = async (req, res) => {
   const usuario = await Usuarios.findOne({
